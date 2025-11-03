@@ -22,7 +22,7 @@ class Solution(object):
                     return True
                 else:
                     return False
-            elif s[l1]==s[l2] and l1<len(s):
+            elif s[l1]==t[l2] and l1<len(s):
                 count+=1
                 l1+=1
                 l2+=1
