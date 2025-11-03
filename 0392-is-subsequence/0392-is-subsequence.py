@@ -12,27 +12,19 @@ class Solution(object):
         if len(t)>0 and s=="":
             return True
 
-        l1=0
-        l2=0
-        count=0
-        while l1<=l2 and l1<len(s) and l2<len(t):
-            if s[l1]==t[l2] and l1==len(s)-1:
-                count+=1
-                if count==len(s):
-                    return True
+        m=len(s)
+        n=len(t)
+        OPT=[[False for j in range(n+1)] for i in range(m+1)]
+        for i in range(n+1):
+            OPT[0][i]=True
+
+        for i in range(1,m+1):
+            for j in range(1,n+1):
+                if s[i-1]==t[j-1]:
+                    OPT[i][j]=OPT[i-1][j-1]
                 else:
-                    return False
-            elif s[l1]==t[l2] and l1<len(s):
-                count+=1
-                l1+=1
-                l2+=1
-            else:
-                l2+=1
-        if count==len(s):
-            return True
-        else:
-            return False
-
-
-
+                    OPT[i][j]=OPT[i][j-1]
+        return OPT[m][n]
         
+
+
