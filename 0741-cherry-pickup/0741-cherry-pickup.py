@@ -4,42 +4,37 @@ class Solution(object):
         if grid[n-1][n-1] == -1 or grid[0][0] == -1:
             return 0
 
-        # Single OPT array, initialize with -1
-        OPT = [[[-1 for z in range(n)] for j in range(n)] for i in range(n)]
+        OPT = [[[None for z in range(n)] for j in range(n)] for i in range(n)]
         
-        def solve(r1, c1, r2):
+        def getValue(r1, c1, r2):
             c2 = r1 + c1 - r2
-            
-            # Out of bounds or obstacle
-            if r1 >= n or c1 >= n or r2 >= n or c2 >= n or c2 < 0:
+            if r1 >= n or c1 >= n or r2 >= n or c2 >= n or r2 < 0 or c2 < 0:
                 return float('-inf')
             if grid[r1][c1] == -1 or grid[r2][c2] == -1:
                 return float('-inf')
-            
-            # Base case: reached destination
-            if r1 == n-1 and c1 == n-1:
-                return grid[r1][c1]
-            
-            # Memoization check
-            if OPT[r1][c1][r2] != -1:
+            if OPT[r1][c1][r2] is not None:
                 return OPT[r1][c1][r2]
-            
-            # Collect cherries at current position
-            cherries = grid[r1][c1]
-            if r1 != r2 or c1 != c2:
-                cherries += grid[r2][c2]
-            
-            # Try all 4 moves (these will be computed first via recursion)
-            maxCherries = max(
-                solve(r1+1, c1, r2+1),
-                solve(r1+1, c1, r2),
-                solve(r1, c1+1, r2+1),
-                solve(r1, c1+1, r2)
-            )
-            
-            # Store result
-            OPT[r1][c1][r2] = cherries + maxCherries if maxCherries != float('-inf') else float('-inf')
-            return OPT[r1][c1][r2]
+            if r1 == n-1 and c1 == n-1:
+                OPT[r1][c1][r2] = grid[r1][c1]
+                return OPT[r1][c1][r2]
         
-        result = solve(0, 0, 0)
-        return max(0, result)
+            if r1 == r2 and c1 == c2:
+                cherries = grid[r1][c1]
+            else:
+                cherries = grid[r1][c1] + grid[r2][c2]
+            
+            # RECURSIVE RELATION 
+            option1 = getValue(r1 + 1, c1, r2 + 1) #down,down
+            option2 = getValue(r1 + 1, c1, r2) #down,right
+            option3 = getValue(r1, c1 + 1, r2 + 1)#right,down
+            option4 = getValue(r1, c1 + 1, r2) #right,right
+            maxCherries = max(option1, option2, option3, option4)
+            
+            if maxCherries == float('-inf'):
+                OPT[r1][c1][r2] = float('-inf')
+            else:
+                OPT[r1][c1][r2] = cherries + maxCherries
+            return OPT[r1][c1][r2]
+
+        result = getValue(0, 0, 0)
+        return max(0, result) #zero due to unreachable
