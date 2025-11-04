@@ -21,10 +21,11 @@ class Solution(object):
             n_t_c = num_to_count(nlist)
             c_t_n = count_to_num(n_t_c)
 
-            sorted_list = [
-                (count, sorted(numbers, reverse=True))
-                for count, numbers in sorted(c_t_n.items(), reverse=True)
-            ]
+            sorted_list = []
+            sorted_counts = sorted(c_t_n.items(), reverse=True)
+            for count, numbers in sorted_counts:
+                sorted_numbers = sorted(numbers, reverse=True)
+                sorted_list.append((count, sorted_numbers))
 
             result = []
             remaining = x 
