@@ -7,20 +7,13 @@ class Solution(object):
         """
         n = len(sequence)
         m = len(word)
-        maxk=0
-        OPT=[0 for i in range(n)]
 
-        #if len(word)=2, check if seq[0,1 (inclusive)]=word (last index=1)
-        #if len(word)=4, check if seq[0,1,2,3]=word (last index=3)
-        #if len(word)=m, check seq from 0 to m-1 (last index=m-1)
-        #start from the first possible index where 'word' can end 
+        OPT = [0 for i in range(n)]
+
         for i in range(m-1,n):
-            if sequence[i-m+1: i+1]==word:
-                if i-m>=0:
-                    OPT[i] = OPT[i-m]+1
-                else:
+            if sequence[i-m+1:i+1]==word:
+                if i-m+1==0:
                     OPT[i]=1
-                maxk = max(maxk, OPT[i])
-            else:
-                OPT[i]=0
-        return maxk
+                else:
+                    OPT[i]=OPT[i-m]+1
+        return max(OPT)
