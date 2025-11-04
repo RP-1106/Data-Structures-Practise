@@ -4,14 +4,12 @@ class Solution(object):
         :type cost: List[int]
         :rtype: int
         """
-        cost.append(0)
         n = len(cost)
-        OPT=[float('inf') for i in range(n+1)]
-        OPT[0]=0
-        OPT[1]=cost[0]
+        OPT=[float('inf') for i in range(n)]
+        OPT[0]=cost[0]
+        OPT[1]=cost[1]
 
-        for i in range(2,n+1):
-            OPT[i]=cost[i-1]+min(OPT[i-1],OPT[i-2])
-        return OPT[n]
-            
+        for i in range(2,n):
+            OPT[i]=cost[i]+min(OPT[i-1],OPT[i-2])
+        return min(OPT[n-1],OPT[n-2])            
         
